@@ -18,11 +18,7 @@ export default async function RoadmapPage() {
           <p className="text-gray-500 mt-2">Your personalized path to {userGoal?.targetRole || "your dream role"} at {userGoal?.targetPackage || "your target package"}.</p>
         </div>
         
-        <RoadmapView 
-          roadmapJson={userGoal?.roadmap} 
-          targetRole={userGoal?.targetRole} 
-          tasks={roadmapTasks} 
-        />
+        <RoadmapView roadmapJson={userGoal?.roadmap} />
       </div>
     </main>
   );
