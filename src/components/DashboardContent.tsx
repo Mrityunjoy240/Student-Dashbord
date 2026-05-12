@@ -70,8 +70,6 @@ export default async function DashboardContent() {
           progress={userGoal?.progress || 0}
           targetPackage={userGoal?.targetPackage || "Not Set"}
           targetRole={userGoal?.targetRole}
-          roadmapJson={userGoal?.roadmap}
-          roadmapTasks={roadmapTasks}
           subjects={subjectsData.map(s => ({
             name: s.name,
             completed: s.completedTopics,
