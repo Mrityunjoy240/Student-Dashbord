@@ -1,0 +1,642 @@
+[
+  {
+    "name": "AI, Ethics, Society",
+    "modules": [
+      {
+        "number": "1",
+        "title": "Foundations  of  Ethics  and  the  Evolution  of  AI",
+        "topics": [
+          "History   of   ethics   (Western,   Indian,   Buddhist,",
+          "Islamic)",
+          "Major   ethical   theories:   Kantian   deontology,",
+          "Consequentialism,   Utilitarianism,   Virtue   Ethics,",
+          "Ethics    of    Care,    Ubuntu,    Distributive    Justice",
+          "Professional  codes  of  conduct:  ACM  Code  of",
+          "Ethics,  ALA Code  of  Ethics  &  Core  Values,  IEEE",
+          "Ethically Aligned Design",
+          "Introduction   to   AI:   definition,   brief   historical",
+          "milestones, generative vs. predictive AI",
+          "Societal dimensions and motivations for AI ethics",
+          "Overview  of  the  AI  lifecycle  (data ->  model ->",
+          "deployment) to frame ethical considerations"
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Technical  Foundations  of  AI  and  Core  Ethical",
+        "topics": [
+          "Challenges",
+          "Supervised     learning     basics     (classification,",
+          "regression) and predictive analytics",
+          "Unsupervised   learning   basics   and   high-level",
+          "overview of  generative AI concepts (GANs, VAEs,",
+          "diffusion models)",
+          "Ethical  issues  in  generative  AI:  synthetic  data,",
+          "deep-fakes, authenticity",
+          "Bias    in    predictive    models    and    real-world",
+          "consequences",
+          "The  AI  alignment  problem:  embedding  human",
+          "values, moral machines (conceptual level)",
+          "Overview of AI decision-making pipelines (data ->",
+          "model -> deployment) and points of ethical risk"
+        ]
+      },
+      {
+        "number": "3",
+        "title": "Data    Ethics,    Privacy,    Bias,    and    Fairness",
+        "topics": [
+          "Data  ownership,  informed  consent,  and  ethical",
+          "data handling practices",
+          "Privacy-enhancing  concepts:  differential  privacy,",
+          "federated   learning   (principles,   not   mathematics)",
+          "Key  data-protection  regulations:  GDPR,  CCPA,",
+          "and emerging global frameworks",
+          "Sources  of  bias  in  data  collection,  labeling,  and",
+          "model training",
+          "Bias  detection  techniques  (statistical  tests,  model-",
+          "card documentation)",
+          "Mitigation strategies (pre-processing, in-",
+          "processing, post-processing)",
+          "Fairness concepts: statistical, individual, and group",
+          "fairness",
+          "Fairness metrics and evaluation methods"
+        ]
+      },
+      {
+        "number": "4",
+        "title": "Accountability, Transparency,  Explainability  &",
+        "topics": [
+          "Legal Landscape",
+          "The    black-box    problem    and   interpretability",
+          "techniques   (feature   importance,   LIME,   SHAP)",
+          "Explainable  AI:  technical  methods  and  emerging",
+          "legal requirements (e.g., EU AI Act)",
+          "Accountability  frameworks:  algorithmic  impact",
+          "assessments,  model-cards,  documentation  standards",
+          "Legal    landscape    governing    AI:    intellectual",
+          "property,  liability,  AI-specific  regulations,  GDPR",
+          "implications",
+          "Transparency,    power,    and    agency    in    AI",
+          "deployments",
+          "Ethical guidelines & standards for explainable and",
+          "accountable AI (IEEE 7010, ISO/IEC 42001)"
+        ]
+      },
+      {
+        "number": "5",
+        "title": "Autonomous    Systems,    Societal    Impacts    &",
+        "topics": [
+          "Controversial Applications",
+          "Ethical challenges in autonomous vehicles, drones,",
+          "and robots (trolley problem, moral decision-making)",
+          "AI and the future of work: automation, inequality,",
+          "reskilling strategies",
+          "Case studies of AI failures (biased policing, hiring",
+          "algorithms, deep-fake misuse)",
+          "Military   and   surveillance   applications   of   AI",
+          "(autonomous weapons, mass monitoring)",
+          "AI  in creative  industries  and  biomedical  research",
+          "(authorship, data sharing, reproducibility)",
+          "Responsibility and  accountability  for  autonomous",
+          "decision-making",
+          "Emerging governance approaches for high-risk AI",
+          "systems"
+        ]
+      },
+      {
+        "number": "6",
+        "title": "Governance, Policy, and Responsible AI Practice",
+        "topics": [
+          "International    and    national    AI    governance",
+          "initiatives     (OECD     AI     Principles,     UNESCO",
+          "Recommendation, EU AI Act)",
+          "Human-rights-centered  AI  design  and  normative",
+          "models",
+          "Policy  recommendations,  regulatory  challenges,",
+          "and future directions",
+          "Interdisciplinary  collaboration  for  AI  ethics  (law,",
+          "sociology, computer science)",
+          "Responsible  AI  engineering  practices  and  ethical",
+          "AI    lifecycle    (model-cards,    data-sheets,    impact",
+          "assessments)",
+          "Development  of  AI  ethics  guidelines,  standards,",
+          "and   certification   (ISO/IEC   42001,   IEEE   7010)",
+          "Strategies   for   building   public   trust,   societal",
+          "engagement, and addressing public concerns"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Design and Analysis of Algorithm",
+    "modules": []
+  },
+  {
+    "name": "Operating System",
+    "modules": [
+      {
+        "number": "1",
+        "title": "Foundations of Operating Systems",
+        "topics": [
+          "Introduction & history of operating systems",
+          "Basic organization of a computing system (CPU,",
+          "memory, I/O)",
+          "OS components & services: process, memory, I/O,",
+          "file, security",
+          "OS structures & models: monolithic, micro-kernel,",
+          "hybrid, hypervisor (overview only)",
+          "System-call interface, user-OS interaction and",
+          "standard libraries",
+          "Boot process & system initialization (BIOS/UEFI,",
+          "bootloader, init)",
+          "Interrupt handling",
+          "Overview of common OS families (UNIX/Linux,",
+          "Windows, real-time, embedded)"
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Processes and Threads",
+        "topics": [
+          "Process concept, states, and PCB",
+          "Process creation & termination (fork/exec,",
+          "Windows CreateProcess, exit)",
+          "Process control operations: wait, signal, context-",
+          "switch",
+          "Inter-process communication: shared memory,",
+          "pipes, sockets, UNIX signals",
+          "Thread fundamentals: definition, life-cycle,",
+          "POSIX threads and Windows threads",
+          "Multicore programming issues and thread-",
+          "scheduling models (1:1, M:N)",
+          "Process isolation, namespaces and lightweight",
+          "containers (conceptual overview)",
+          "Comparison of process vs. thread abstractions and",
+          "typical AI workload patterns"
+        ]
+      },
+      {
+        "number": "3",
+        "title": "Process Scheduling and Concurrency Control",
+        "topics": [
+          "Scheduling goals: throughput, latency, fairness,",
+          "response time",
+          "Classic algorithms (FCFS, SJF, RR, priority,",
+          "multilevel feedback)",
+          "Multiprocessor scheduling basics and load-",
+          "balancing strategies",
+          "Context-switch mechanics and overhead",
+          "considerations",
+          "Fairness, priority inversion and simple mitigation",
+          "(priority inheritance)",
+          "Introduction to concurrency sources",
+          "(multiprocessors, interrupts, I/O)",
+          "Critical-section problem and basic atomic",
+          "operations",
+          "Simple real-time scheduling concept (Earliest-",
+          "Deadline-First)"
+        ]
+      },
+      {
+        "number": "4",
+        "title": "Synchronization Primitives and Deadlock",
+        "topics": [
+          "Critical-section problem and correctness criteria",
+          "Classic software solutions (Peterson's, Dekker,",
+          "Lamport's bakery)",
+          "Hardware primitives: test-and-set, compare-and-",
+          "swap, memory barriers",
+          "Synchronization objects: mutexes, spinlocks,",
+          "semaphores, condition variables, monitors, barriers",
+          "Common patterns: producer-consumer, readers-",
+          "writers, dining philosophers",
+          "Deadlock model: resource-allocation graph, four",
+          "necessary conditions",
+          "Deadlock handling: prevention, avoidance",
+          "(banker's algorithm overview), detection & recovery",
+          "Intro to lock-free / wait-free ideas and atomic",
+          "primitives used in AI frameworks"
+        ]
+      },
+      {
+        "number": "5",
+        "title": "Memory Management and Virtual Memory",
+        "topics": [
+          "Memory-management background and hardware",
+          "support (MMU, protection bits)",
+          "Allocation strategies: swapping, contiguous",
+          "allocation, fragmentation",
+          "Segmentation and paging fundamentals;",
+          "hierarchical & inverted page tables",
+          "TLB role and basic performance impact",
+          "Virtual memory: demand paging, copy-on-write,",
+          "page-fault handling",
+          "Page-replacement policies (FIFO, LRU, Clock) -",
+          "conceptual only",
+          "Working-set model, thrashing, frame allocation",
+          "policies",
+          "Memory protection techniques (ASLR, guard",
+          "pages) and NUMA awareness for AI workloads",
+          "Kernel memory allocation, memory-mapped files",
+          "and brief intro to garbage collection"
+        ]
+      },
+      {
+        "number": "6",
+        "title": "Storage, I/O, Protection, Security & Advanced",
+        "topics": [
+          "OS Topics",
+          "Storage hierarchy: magnetic disks, SSDs, RAID",
+          "levels, NFS & cloud object storage",
+          "Disk structure, basic scheduling (elevator, SSTF,",
+          "C-LOOK) and DMA vs. programmed I/O",
+          "File-system concepts: files, directories, links,",
+          "namespace, permission bits",
+          "File-system implementation: allocation methods,",
+          "free-space management.",
+          "Crash recovery basics, journaling and consistency",
+          "checking",
+          "Protection & security models: UNIX permissions,",
+          "ACLs, capabilities, basic encryption",
+          "Common OS-level attacks and mitigation (buffer",
+          "overflow, privilege escalation)",
+          "OS support for accelerators (GPU/TPU",
+          "scheduling, cgroups, resource quotas) and brief look",
+          "at cloud-native OS services"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Machine Learning",
+    "modules": [
+      {
+        "number": "1",
+        "title": "Introduction     to     Machine     Learning     and",
+        "topics": [
+          "Supervised                                               Learning",
+          "-",
+          "Introduction to Machine Learning: Types of ML",
+          "(Supervised,      Unsupervised,      Reinforcement),",
+          "Applications                           in                           AI",
+          "-",
+          "Supervised  Learning  Fundamentals:  Regression",
+          "vs.                                                       Classification",
+          "Linear  Models:  Linear  Regression  and  Least-",
+          "Squares  Fitting,  Model  Evaluation  Metrics  (MSE,",
+          "RMSE)",
+          "Model Evaluation and Selection: Train-Test Split,",
+          "Cross-Validation  (k-fold),  Bias-Variance  Trade-",
+          "off,   Overfitting   vs.   Underfitting,      Confusion",
+          "Matrix, Precision, Recall, F1-Score, AUC-ROC"
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Supervised        Learning        Algorithms        I:",
+        "topics": [
+          "Classification",
+          "Logistic  Regression  for  Binary  and  Multi-class",
+          "Classification",
+          "-",
+          "Regularization    (L1/L2):    Impact    on    model",
+          "complexity                  and                  generalization",
+          "Optimization Methods: Gradient Descent (Batch,",
+          "Stochastic),        Learning        Rate        Schedules",
+          "-",
+          "Naive    Bayes    Classifier:    Application    and",
+          "assumptions",
+          "k-  Nearest Neighbors: Distance metrics, parameter",
+          "selection"
+        ]
+      },
+      {
+        "number": "3",
+        "title": "Supervised  Learning  Algorithms  II:  Trees  and",
+        "topics": [
+          "Ensembles",
+          "Decision Trees:  Information Gain, Gini Impurity,",
+          "Pruning",
+          "Random  Forests:  Bagging,  Random  Subspace",
+          "-",
+          "Gradient  Boosting  Machines  (GBM):    Boosting",
+          "concept,   example   algorithms   (e.g.,   XGBoost,",
+          "LightGBM) - high-level          overview",
+          "-",
+          "Model  Selection  and  Hyperparameter  Tuning:",
+          "Grid Search, Random Search, Cross-validation"
+        ]
+      },
+      {
+        "number": "4",
+        "title": "Introduction         to         Neural         Networks",
+        "topics": [
+          "-",
+          "Perceptrons and Multilayer Perceptrons (MLPs):",
+          "Forward                                                 propagation",
+          "Activation Functions (Sigmoid, ReLU, Softmax)",
+          "-",
+          "Backpropagation   Algorithm:      Intuition   and",
+          "process",
+          "Loss      Functions      (MSE,      Cross-entropy)",
+          "-",
+          "Optimization  Algorithms:  Stochastic  Gradient",
+          "Descent (SGD),  Adam (high-level understanding)",
+          "-",
+          "Practical   Considerations:   Data   preprocessing,",
+          "feature scaling"
+        ]
+      },
+      {
+        "number": "5",
+        "title": "Unsupervised   Learning   and   Deep   Learning",
+        "topics": [
+          "Architectures                                  (Introduction)",
+          "Unsupervised   Learning:   Clustering   (k-Means",
+          "Algorithm),   Dimensionality   Reduction   (PCA   -",
+          "conceptual                                        understanding)",
+          "Convolutional  Neural  Networks  (CNNs):    High-",
+          "level  overview  of  architecture  and  applications  in",
+          "image    processing    (no    detailed    mathematical",
+          "derivations)",
+          "Recurrent Neural Networks (RNNs):  High-level",
+          "introduction and applications in sequential data (no",
+          "detailed mathematical derivations)"
+        ]
+      },
+      {
+        "number": "6",
+        "title": "AI   Applications,   Ethical   Considerations   &",
+        "topics": [
+          "Reinforcement        Learning        (Introduction)",
+          "Applications of ML/DL in AI:  Image recognition,",
+          "natural    language    processing,    robotics    (brief",
+          "overview)",
+          "-",
+          "Ethical   Considerations   in   AI:   Bias   in   data,",
+          "fairness,            accountability,            transparency",
+          "-",
+          "Reinforcement   Learning:      Markov   Decision",
+          "Processes   (MDPs)   -   conceptual   overview,   Q-",
+          "learning  (high-",
+          "level  understanding),    no  detailed",
+          "mathematical derivations"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Mathematics for Machine Learning",
+    "modules": [
+      {
+        "number": "1",
+        "title": "Linear Algebra Foundations for AI",
+        "topics": [
+          "Vectors,  matrices  and  basic  operations  (addition,",
+          "multiplication, transpose)",
+          "Systems  of  linear  equations  and  matrix  inversion",
+          "Rank,  singularity,  linear  independence,  and  basis",
+          "concepts",
+          "Vector  spaces,  subspaces,  dimension,  and  change",
+          "of basis",
+          "Linear     transformations     and     their     matrix",
+          "representations",
+          "Norms,  inner  product,  orthogonality,  orthonormal",
+          "bases",
+          "Gram-Schmidt  process  and  orthogonal  projections",
+          "Eigenvalues, eigenvectors, diagonalization",
+          "Singular  Value  Decomposition  (SVD)  and  low-",
+          "rank approximation",
+          "Practical    computation    with    NumPy    (matrix",
+          "factorizations, condition numbers)"
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Calculus and Optimization Techniques",
+        "topics": [
+          "Differentiation  of  univariate  functions  and  basic",
+          "limits",
+          "Partial  derivatives,  gradient,  directional  derivative",
+          "Jacobian   and   Hessian   matrices   (interpretation)",
+          "Multivariate  Taylor  series,  linearization,  and  chain",
+          "rule",
+          "Unconstrained   optimization:   gradient   descent,",
+          "Newton's method, momentum",
+          "Simple  learning-rate  schedules  and  early  stopping",
+          "concepts",
+          "Constrained     optimization     basics:     Lagrange",
+          "multipliers",
+          "Convex  sets,  convex  functions,  and  fundamental",
+          "convex optimization ideas",
+          "Introductory    view    of    regularization    as    an",
+          "optimization constraint"
+        ]
+      },
+      {
+        "number": "3",
+        "title": "Probability & Statistics for AI",
+        "topics": [
+          "Probability  space,  axioms,  sum  and  product  rules",
+          "Conditional probability, Bayes' theorem,",
+          "independence",
+          "Key    discrete    and    continuous    distributions",
+          "(Bernoulli, Gaussian, exponential family)",
+          "Expectation,  variance,  covariance,  and  correlation",
+          "Sampling  methods,  descriptive  statistics,  and  data",
+          "summarization",
+          "Hypothesis  testing,  confidence  intervals,  p-values,",
+          "A/B testing",
+          "Maximum Likelihood Estimation (MLE) and MAP",
+          "estimation",
+          "Basic   Bayesian   inference   and   conjugate   priors",
+          "(conceptual overview)",
+          "Bias-variance trade-off, overfitting vs. underfitting,",
+          "and model selection criteria"
+        ]
+      },
+      {
+        "number": "4",
+        "title": "Linear    Models   &    Dimensionality    Reduction",
+        "topics": [
+          "Data   representation,   feature   engineering,   and",
+          "exploratory  data  analysis  with  NumPy  &  pandas",
+          "Train/validation/test   split,   feature   scaling   and",
+          "preprocessing",
+          "Linear  regression  and  multivariate  least-squares",
+          "solution",
+          "Regularization  techniques:  ridge  (L2)  and  lasso",
+          "(L1)",
+          "Logistic  regression  for  binary  classification  and",
+          "cross-entropy loss",
+          "Principal  Component  Analysis  (PCA):  variance",
+          "perspective, eigen computation, projection, low-rank",
+          "approximation",
+          "Linear  Discriminant  Analysis  (LDA):  theory  and",
+          "eigen-solution",
+          "Model     evaluation:     k-fold     cross-validation,",
+          "bootstrapping, ROC/AUC, precision-recall, F1 score",
+          "Introduction  to  model  interpretability (coefficients,",
+          "feature importance)"
+        ]
+      },
+      {
+        "number": "5",
+        "title": "Classical Supervised Learning Algorithms",
+        "topics": [
+          "Support   Vector   Machines:   hard-margin,   soft-",
+          "margin, kernel trick, dual formulation",
+          "Decision   trees   and   regression   trees:   splitting",
+          "criteria, pruning, handling missing values",
+          "Ensemble   methods:   bagging,   random   forests,",
+          "boosting   (AdaBoost,   Gradient   Boosting),   basic",
+          "hyper-parameter tuning",
+          "Perceptron and other linear classifiers",
+          "Classification   evaluation   measures:   confusion",
+          "matrix,    precision/recall,    ROC/AUC,    F1    score",
+          "Hyper-parameter   tuning    basics:    grid    search,",
+          "validation sets, simple cross-validation",
+          "Model  interpretability  tools:  feature  importance,",
+          "SHAP/partial dependence plots"
+        ]
+      },
+      {
+        "number": "6",
+        "title": "Deep    Learning,    Unsupervised    Learning    &",
+        "topics": [
+          "Uncertainty",
+          "Neural network  fundamentals:  activation functions",
+          "(ReLU,   sigmoid,   softmax),   loss   functions   (cross-",
+          "entropy, MSE)",
+          "Forward   pass,   backpropagation,   and   automatic",
+          "differentiation",
+          "Optimization  for   deep   nets:  SGD,  momentum,",
+          "Adam (overview)",
+          "Regularization  in  deep  learning:  dropout,  batch",
+          "normalization, weight decay",
+          "Convolutional  neural  network  basics  (convolution,",
+          "pooling, simple architectures)",
+          "Expectation-Maximization   (EM)   algorithm   and",
+          "Gaussian Mixture Models",
+          "Clustering    algorithms:    k-means,    hierarchical",
+          "clustering, density-based (DBSCAN/BIRCH)",
+          "Uncertainty   quantification   basics   (Monte-Carlo",
+          "dropout, predictive intervals)",
+          "Snapshot  of  current  trends:  transformer  encoder-",
+          "decoder concept, attention mechanism",
+          "Ethical    considerations    and    responsible    AI",
+          "deployment (bias, fairness, reproducibility)"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Data Handling and Data Visualization",
+    "modules": [
+      {
+        "number": "1",
+        "title": "Introduction    to    Data    Visualization    for    AI",
+        "topics": [
+          "Defining  data  visualization  in  the  context  of  AI",
+          "The  visualization  workflow  for  AI  applications",
+          "(data   exploration,   model   understanding,   result",
+          "communication)",
+          "Principles  of  human  perception  and  cognition",
+          "relevant to AI insights",
+          "Assessing   visualization   quality   for   AI   model",
+          "explainability",
+          "Ethical considerations in data visualization for AI",
+          "(avoiding bias, ensuring fairness)",
+          "Effective   visual   communication   of   AI   model",
+          "performance and limitations"
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Fundamental Chart Types and Data",
+        "topics": [
+          "Representation for AI",
+          "Data  types  and  their  visual  representations  in  AI",
+          "(categorical, numerical, temporal, spatial)",
+          "Core chart types for AI:  Histograms, scatter plots,",
+          "box  plots,  line  charts  (focus  on  applications  in",
+          "regression, classification, clustering)",
+          "Visualizing  data  distributions  for  model  training",
+          "and evaluation",
+          "Effective use of color, labels, and legends for clear",
+          "communication of AI results",
+          "Choosing  appropriate  chart  types  based  on  data",
+          "characteristics and AI task"
+        ]
+      },
+      {
+        "number": "3",
+        "title": "Data    Preprocessing    and    Exploratory    Data",
+        "topics": [
+          "Analysis (EDA) for AI",
+          "Data cleaning and preprocessing techniques for AI",
+          "(handling missing values, outliers, noise)",
+          "Feature   scaling   and   transformation   methods",
+          "relevant to AI algorithms",
+          "Exploratory  Data  Analysis  (EDA)  techniques  for",
+          "AI:     identifying     patterns,     relationships,     and",
+          "anomalies",
+          "Data  visualization  techniques  for  EDA  in  AI",
+          "(histograms,  scatter  plots,  box  plots,  pair  plots)",
+          "Dimensionality  reduction  techniques  and  their",
+          "visualization (PCA, t-SNE)"
+        ]
+      },
+      {
+        "number": "4",
+        "title": "Visualizing     AI     Models     and     Relationships",
+        "topics": [
+          "Visualizing  model  performance  metrics  (ROC",
+          "curves,  precision-recall  curves, confusion matrices)",
+          "Visualizing    feature    importance    for    model",
+          "explainability   (feature   importance   plots,   partial",
+          "dependence plots)",
+          "Visualizing  decision  boundaries  for  classification",
+          "models",
+          "Visualizing  relationships  between  features  and",
+          "target variables",
+          "Techniques  for  visualizing  high-dimensional  data",
+          "in  the  context  of  AI  (e.g.,  parallel  coordinates,",
+          "dimensionality reduction visualizations)"
+        ]
+      },
+      {
+        "number": "5",
+        "title": "Data Visualization Tools for AI",
+        "topics": [
+          "Python libraries for data visualization (Matplotlib,",
+          "Seaborn, Plotly): hands-on practice",
+          "Introduction  to  interactive  visualization  libraries",
+          "(Bokeh, Plotly Dash)",
+          "Version  control  with  Git  for  collaborative  data",
+          "visualization projects",
+          "Best   practices   for   creating   reproducible   and",
+          "shareable visualizations",
+          "Creating  effective  visualizations  for  reports  and",
+          "presentations"
+        ]
+      },
+      {
+        "number": "6",
+        "title": "Explainable    AI    (XAI)    and    Case    Studies",
+        "topics": [
+          "Introduction  to  Explainable  AI  (XAI)  and  its",
+          "importance in AI systems",
+          "Techniques  for  visualizing  model  explanations",
+          "(LIME, SHAP values)",
+          "Case studies demonstrating the application of data",
+          "visualization in XAI",
+          "Ethical  considerations  in XAI  and  responsible  AI",
+          "development",
+          "The future of data visualization in AI and related",
+          "research areas"
+        ]
+      }
+    ]
+  }
+]

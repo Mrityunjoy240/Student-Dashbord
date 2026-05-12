@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserGoal {
+  id              String   @id @default(cuid())
+  currentYear     String?  // e.g., "1st Year", "2nd Year"
+  branch          String?  // e.g., "CSE", "ECE"
+  currentSkills   String?  // comma separated skills
+  targetPackage   String
+  targetRole      String?  // e.g., "SDE", "Data Scientist"
+  targetDate      DateTime
+  progress        Int      @default(0)
+  roadmap         String?  // AI generated roadmap (JSON string)
+}
+
+model Exam {
+  id         String   @id @default(cuid())
+  name       String
+  targetDate DateTime
+}
+
+model Subject {
+  id              String   @id @default(cuid())
+  name            String
+  difficulty      String
+  totalTopics     Int
+  completedTopics Int
+  color           String   // e.g., "brand", "green", "orange", "yellow", "blue"
+  tasks           Task[]
+}
+
+model Event {
+  id    String   @id @default(cuid())
+  title String
+  type  String   // "Study Plan", "Assignment", "Exam"
+  date  DateTime
+  color String   // "green", "orange", "brand", "red"
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  isCompleted Boolean  @default(false)
+  category    String   // e.g., "DBMS", "DSA", "OS", "ML", "CN", "EXAM", "ROADMAP"
+  subjectId   String?
+  subject     Subject? @relation(fields: [subjectId], references: [id])
+  module      String?  // Module/Chapter name
+  milestoneIndex Int?  // Index in the roadmap milestones array
+  priority    String   @default("Low") // "High", "Medium", "Low"
+  dueDate     DateTime?
+}
