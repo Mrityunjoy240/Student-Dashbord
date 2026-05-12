@@ -45,7 +45,7 @@ export default function SyllabusUploadModal() {
       const res = await uploadSyllabus(formData);
       
       if (res.success) {
-        setResult({ count: res.count });
+        setResult({});
         setStatus('success');
         setTimeout(() => {
           closeModal();
