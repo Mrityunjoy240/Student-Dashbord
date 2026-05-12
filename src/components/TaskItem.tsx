@@ -2,8 +2,13 @@
 
 import { useTransition } from "react";
 import { toggleTask, updateTaskPriority, deleteTask } from "@/app/actions";
-import { clsx } from "clsx";
-import { Trash2, AlertCircle } from "lucide-react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { Trash2, CheckCircle2, Circle, Loader2, Hash, Calendar, ArrowRight, Shield, Zap, AlertCircle } from "lucide-react";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface TaskItemProps {
   id: string;
@@ -34,66 +39,99 @@ export default function TaskItem({ id, title, isCompleted, category, priority = 
     });
   };
 
+  const priorityStyles = {
+    High: { bg: "bg-red-50", text: "text-red-600", border: "border-red-100", icon: AlertCircle },
+    Medium: { bg: "bg-amber-50", text: "text-amber-600", border: "border-amber-100", icon: Zap },
+    Low: { bg: "bg-gray-50", text: "text-gray-500", border: "border-gray-100", icon: Shield },
+  };
+
+  const currentPriority = priorityStyles[priority as keyof typeof priorityStyles] || priorityStyles.Low;
+
   return (
-    <div className={clsx(
-      "flex items-center justify-between group transition-all py-1 px-1 -mx-1 rounded-md hover:bg-gray-50",
-      isPending && "opacity-50"
+    <div className={cn(
+      "flex items-center justify-between group transition-all p-5 rounded-[2rem] border-2 border-transparent hover:border-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-100/50 relative overflow-hidden",
+      isPending && "opacity-50 pointer-events-none",
+      isCompleted && "bg-gray-50/30"
     )}>
-      <label className="flex items-center gap-3 cursor-pointer flex-1 overflow-hidden min-w-0">
-        <input 
-          type="checkbox" 
-          checked={isCompleted} 
-          disabled={isPending}
-          onChange={(e) => {
+      <div className="flex items-center gap-6 flex-1 min-w-0 relative z-10">
+        <button 
+          onClick={() => {
             startTransition(async () => {
-              await toggleTask(id, e.target.checked);
+              await toggleTask(id, !isCompleted);
             });
           }}
-          className="w-4 h-4 text-brand-600 rounded border-gray-300 focus:ring-brand-500 accent-brand-600 flex-shrink-0" 
-        />
-        <div className="flex flex-col truncate min-w-0">
-          <span className={clsx("truncate pr-2", isCompleted ? "text-gray-400 line-through" : "text-gray-700")}>
+          className={cn(
+            "shrink-0 transition-all duration-500 relative",
+            isCompleted ? "text-emerald-500 scale-110" : "text-gray-300 hover:text-brand-500 hover:scale-110"
+          )}
+        >
+          {isPending ? (
+            <Loader2 size={24} className="animate-spin text-brand-600" />
+          ) : isCompleted ? (
+            <div className="relative">
+              <CheckCircle2 size={28} strokeWidth={2.5} />
+              <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-md animate-pulse"></div>
+            </div>
+          ) : (
+            <Circle size={28} strokeWidth={2} />
+          )}
+        </button>
+
+        <div className="flex flex-col min-w-0">
+          <span className={cn(
+            "text-[15px] font-black tracking-tight transition-all truncate pr-6 uppercase", 
+            isCompleted ? "text-gray-400 line-through decoration-2" : "text-gray-900"
+          )}>
             {title}
           </span>
-          {dueDate && (
-            <span className="text-[10px] text-gray-400 mt-0.5">
-              Due: {new Date(dueDate).toLocaleDateString()}
+          <div className="flex items-center gap-4 mt-2">
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-xl border border-gray-100">
+              <Hash size={10} className="text-gray-300" /> {category}
             </span>
-          )}
+            {dueDate && (
+              <span className="text-[10px] text-brand-600 font-black uppercase tracking-widest flex items-center gap-2">
+                <Calendar size={12} />
+                {new Date(dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+              </span>
+            )}
+          </div>
         </div>
-      </label>
-      
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <span 
-          onClick={cyclePriority}
-          title={`Priority: ${priority} (Click to change)`}
-          className={clsx(
-            "w-2.5 h-2.5 rounded-full cursor-pointer hover:ring-2 ring-offset-1 transition-all",
-            priority === "High" ? "bg-red-500 ring-red-500" : 
-            priority === "Medium" ? "bg-yellow-400 ring-yellow-400" : 
-            "bg-green-500 ring-green-500"
-          )}
-        />
-        
-        <span className={clsx(
-          "px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide",
-          category === 'DBMS' && "bg-green-50 text-green-600",
-          category === 'DSA' && "bg-brand-50 text-brand-600",
-          category === 'OS' && "bg-orange-50 text-orange-500",
-          category === 'ML' && "bg-blue-50 text-blue-500",
-          category === 'CN' && "bg-blue-50 text-blue-500",
-          category === 'EXAM' && "bg-red-50 text-red-500",
-          !['DBMS', 'DSA', 'OS', 'ML', 'CN', 'EXAM'].includes(category) && "bg-gray-100 text-gray-600"
-        )}>{category}</span>
-
-        <button 
-          onClick={handleDelete}
-          className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
-          title="Remove task"
-        >
-          <Trash2 size={14} />
-        </button>
       </div>
+      
+      <div className="flex items-center gap-6 flex-shrink-0 relative z-10">
+        <button 
+          onClick={cyclePriority}
+          className={cn(
+            "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] border transition-all hover:scale-105 active:scale-95 shadow-sm flex items-center gap-2",
+            currentPriority.bg,
+            currentPriority.text,
+            currentPriority.border
+          )}
+        >
+          <currentPriority.icon size={12} />
+          {priority}
+        </button>
+
+        <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+          <button 
+            onClick={handleDelete}
+            className="text-gray-300 hover:text-red-600 p-3 rounded-xl hover:bg-red-50 transition-all"
+            aria-label="Archive objective"
+          >
+            <Trash2 size={18} strokeWidth={2.5} />
+          </button>
+          <div className="w-1.5 h-6 bg-gray-100 rounded-full"></div>
+        </div>
+      </div>
+
+      {/* Subtle Background Glow */}
+      <div className={cn(
+        "absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-gradient-to-r from-transparent via-white to-transparent"
+      )}></div>
     </div>
   );
 }
+
+
+
+

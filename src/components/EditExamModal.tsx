@@ -2,7 +2,13 @@
 
 import { useRef, useTransition } from "react";
 import { updateExam } from "@/app/actions";
-import { Pen, X } from "lucide-react";
+import { Pen, X, Calendar, AlertTriangle, ChevronRight, Loader2, Clock } from "lucide-react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface EditExamModalProps {
   initialName: string;
@@ -30,50 +36,75 @@ export default function EditExamModal({ initialName, initialDate }: EditExamModa
     <>
       <button 
         onClick={openModal}
-        className="text-red-500 border border-red-100 hover:bg-red-50 font-medium text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+        className="px-6 py-3 bg-white border-2 border-red-50 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-red-400 hover:text-red-600 hover:border-red-600 hover:shadow-2xl hover:shadow-red-50/50 transition-all active:scale-95 flex items-center gap-3 group"
       >
-        <Pen size={10} /> Edit Exam Date
+        <Pen size={14} className="group-hover:rotate-12 transition-transform duration-500" /> 
+        Adjust Deadline
       </button>
 
       <dialog 
         ref={dialogRef}
-        className="backdrop:bg-black/50 p-0 rounded-xl shadow-2xl border-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 outline-none"
+        className="backdrop:bg-red-950/20 backdrop:backdrop-blur-3xl p-0 rounded-[4rem] shadow-[0_50px_100px_-20px_rgba(239,68,68,0.2)] border-2 border-red-100/20 w-[500px] outline-none m-auto overflow-hidden animate-in fade-in zoom-in duration-500"
       >
-        <div className="w-80 p-6 bg-white">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-gray-900">Edit Exam</h3>
-            <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
-              <X size={18} />
+        <div className="bg-white p-16 font-sans antialiased text-gray-900">
+          <div className="flex justify-between items-center mb-16">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-red-600 rounded-[2.5rem] flex items-center justify-center shadow-2xl shadow-red-100">
+                 <AlertTriangle size={28} className="text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">Temporal Shift</h3>
+                <p className="text-[11px] text-red-400 font-black uppercase tracking-[0.2em] mt-2">Critical Vector Calibration</p>
+              </div>
+            </div>
+            <button onClick={closeModal} className="w-16 h-16 rounded-[2.5rem] hover:bg-red-50 flex items-center justify-center text-red-200 hover:text-red-600 transition-all hover:rotate-90 duration-500">
+              <X size={32} />
             </button>
           </div>
           
-          <form action={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Exam Name</label>
-              <input 
-                name="name"
-                defaultValue={initialName}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                placeholder="e.g. End Sem"
-                required
-              />
+          <form action={handleSubmit} className="space-y-12">
+            <div className="space-y-10">
+              <div className="group/field">
+                <label className="flex items-center gap-3 text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] mb-5 group-focus-within/field:text-red-600 transition-colors">
+                  <Clock size={12} /> Objective Identity
+                </label>
+                <input 
+                  name="name"
+                  defaultValue={initialName}
+                  className="w-full bg-red-50/20 border-2 border-red-50 rounded-[2.5rem] px-10 py-7 text-xl font-black focus:outline-none focus:ring-8 focus:ring-red-500/5 focus:bg-white focus:border-red-200 transition-all placeholder:text-red-100 shadow-inner uppercase tracking-tight text-red-900"
+                  placeholder="e.g. Final Breakthrough"
+                  required
+                />
+              </div>
+
+              <div className="group/field">
+                <label className="flex items-center gap-3 text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] mb-5 group-focus-within/field:text-red-600 transition-colors">
+                  <Calendar size={12} /> Target Timestamp
+                </label>
+                <input 
+                  name="date"
+                  type="date"
+                  defaultValue={initialDate}
+                  className="w-full bg-red-50/20 border-2 border-red-50 rounded-[2.5rem] px-10 py-7 text-xl font-black focus:outline-none focus:ring-8 focus:ring-red-500/5 focus:bg-white focus:border-red-200 transition-all shadow-inner uppercase tracking-tight text-red-900"
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Target Date</label>
-              <input 
-                name="date"
-                type="date"
-                defaultValue={initialDate}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                required
-              />
-            </div>
+            
             <button 
               type="submit"
               disabled={isPending}
-              className="w-full bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
+              className="w-full bg-red-600 text-white py-8 rounded-[3rem] text-[12px] font-black uppercase tracking-[0.4em] hover:bg-red-700 transition-all shadow-2xl shadow-red-100 disabled:opacity-10 mt-10 active:scale-95 group flex items-center justify-center gap-4"
             >
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? (
+                <>
+                  <Loader2 size={24} className="animate-spin" /> LOCKING TEMPORAL COORDINATES...
+                </>
+              ) : (
+                <>
+                  SYNC CRITICAL CLOCK <ChevronRight size={24} className="group-hover:translate-x-2 transition-transform" />
+                </>
+              )}
             </button>
           </form>
         </div>
@@ -81,3 +112,5 @@ export default function EditExamModal({ initialName, initialDate }: EditExamModa
     </>
   );
 }
+
+
