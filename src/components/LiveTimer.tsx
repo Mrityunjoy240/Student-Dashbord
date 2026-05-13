@@ -47,10 +47,12 @@ export default function LiveTimer({ targetDate, variant = "brand" }: LiveTimerPr
     return () => clearInterval(timer);
   }, [targetDate]);
 
+  const isExpired = new Date(targetDate).getTime() < new Date().getTime() || timeLeft.days + timeLeft.hours + timeLeft.minutes + timeLeft.seconds === 0;
+
   if (!isClient) {
     return (
-      <div className="space-y-4 opacity-0">
-        <div className="flex gap-2">
+      <div className="space-y-4">
+        <div className="flex gap-2 animate-pulse">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className="flex-1 bg-gray-50 border border-gray-100 rounded-xl p-3 text-center h-16"></div>
           ))}
@@ -58,8 +60,6 @@ export default function LiveTimer({ targetDate, variant = "brand" }: LiveTimerPr
       </div>
     );
   }
-
-  const isExpired = new Date(targetDate).getTime() < new Date().getTime();
 
 
   return (

@@ -19,9 +19,9 @@ export async function POST(req: Request) {
     
     const context = `
       Current Student Status:
-      - Goal: ${userGoal?.targetPackage}, Progress: ${userGoal?.progress}%
-      - Next Exam: ${exam?.name} on ${exam?.targetDate.toLocaleDateString()}
-      - Subjects: ${subjects.map(s => `${s.name} (${s.completedTopics}/${s.totalTopics} topics)`).join(", ")}
+      - Goal: ${userGoal?.targetPackage || "Not Set"}, Progress: ${userGoal?.progress || 0}%
+      - Next Exam: ${exam?.name || "None"} on ${exam?.targetDate ? exam.targetDate.toLocaleDateString() : "Not scheduled"}
+      - Subjects: ${subjects.length > 0 ? subjects.map(s => `${s.name} (${s.completedTopics}/${s.totalTopics} topics)`).join(", ") : "No subjects loaded yet"}
     `;
 
     const prompt = `Context: ${context}\n\nUser Question: ${message}\n\nRespond as a helpful and encouraging academic manager. Keep the response concise and action-oriented.`;

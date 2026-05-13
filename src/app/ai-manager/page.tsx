@@ -131,7 +131,19 @@ export default function AIManagerPage() {
 
           <div className="mt-12 p-6 bg-brand-600 rounded-2xl text-white">
             <h4 className="font-bold text-sm mb-2">Pro Tip</h4>
-            <p className="text-xs text-brand-100 leading-relaxed">Try asking: "What should I focus on for my upcoming End Sem Exam?"</p>
+            <p className="text-xs text-brand-100 leading-relaxed mb-4">Try asking: "What should I focus on for my upcoming End Sem Exam?"</p>
+            <button 
+              onClick={async () => {
+                if (confirm("This will reset your current data and load demo academic data. Proceed?")) {
+                  const { seedDatabase } = await import("@/app/actions");
+                  await seedDatabase();
+                  window.location.reload();
+                }
+              }}
+              className="w-full py-2 bg-white/20 hover:bg-white/30 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all border border-white/20"
+            >
+              Initialize Demo Data
+            </button>
           </div>
         </div>
       </div>

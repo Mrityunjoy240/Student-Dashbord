@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { X, TrendingUp, BarChart3, Layers, ArrowUpRight, CheckCircle2, ChevronRight, Target, Zap, Activity, Shield, Sparkles, Brain, PieChart, Info, Command, Globe, Rocket } from "lucide-react";
+import { X, TrendingUp, BarChart3, Layers, ArrowUpRight, CheckCircle2, ChevronRight, Target, Zap } from "lucide-react";
 import Link from "next/link";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -39,264 +39,189 @@ export default function DetailedProgressModal({
 
   return (
     <>
-      <button 
+      <div 
         onClick={openModal}
-        className="cursor-pointer group h-full w-full text-left appearance-none focus:outline-none"
-        aria-label="View detailed progress analytics"
+        className="cursor-pointer group h-full"
       >
-        <div className="bg-white border-2 border-gray-50 rounded-[4rem] p-12 shadow-2xl shadow-gray-100 group-hover:border-brand-200 transition-all duration-500 h-full flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
-             <BarChart3 size={200} />
-          </div>
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-gray-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-300 h-full flex flex-col justify-between relative overflow-hidden">
+          {/* Subtle Linear-like background glow */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-500/10 transition-colors"></div>
           
           <div className="relative z-10">
-            <div className="flex justify-between items-center mb-12">
-              <div className="bg-brand-50 border border-brand-100 rounded-2xl px-5 py-2 flex items-center gap-3">
-                <Target size={16} className="text-brand-600" />
-                <h2 className="text-[11px] font-black text-brand-900 uppercase tracking-[0.3em]">Trajectory Status</h2>
+            <div className="flex justify-between items-center mb-4">
+              <div className="bg-brand-50 border border-brand-100 rounded-lg px-2.5 py-1 flex items-center gap-2">
+                <Target size={12} className="text-brand-600" />
+                <h2 className="text-[10px] font-black text-brand-900 uppercase tracking-widest">Goal Achievement</h2>
               </div>
-              <div className="text-gray-200 group-hover:text-brand-500 transition-all duration-700 group-hover:rotate-12">
-                <TrendingUp size={28} />
+              <div className="text-gray-400 group-hover:text-brand-500 transition-colors">
+                <TrendingUp size={14} />
               </div>
             </div>
             
-            <div className="flex items-baseline gap-4 mb-3">
-              <div className="text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">{progress}%</div>
-              <div className="flex items-center gap-2 text-[12px] font-black text-green-600 bg-green-50 px-4 py-1.5 rounded-xl uppercase tracking-[0.2em] border border-green-100">
-                 <Activity size={14} className="animate-pulse" />
-                 OPTIMAL
-              </div>
+            <div className="flex items-baseline gap-2 mb-1">
+              <div className="text-4xl font-semibold text-gray-900 tracking-tight">{progress}%</div>
+              <div className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded uppercase tracking-tighter">On Track</div>
             </div>
-            <p className="text-gray-400 text-[11px] font-black uppercase tracking-[0.3em] mb-12 flex items-center gap-3">
-               <Rocket size={14} className="text-gray-300" /> Primary Objective: {targetPackage}
-            </p>
+            <p className="text-gray-500 text-xs font-medium mb-6">Target: {targetPackage}</p>
             
-            <div className="space-y-6">
-              <div className="w-full bg-gray-50 border-2 border-gray-50 rounded-full h-4 overflow-hidden p-1 shadow-inner">
+            <div className="space-y-3 mb-4">
+              <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                 <div 
-                  className="bg-brand-600 h-full rounded-full transition-all duration-1000 relative shadow-lg shadow-brand-100" 
+                  className="bg-brand-600 h-full rounded-full transition-all duration-1000 ease-in-out shadow-[0_0_8px_rgba(124,58,237,0.2)]" 
                   style={{ width: `${progress}%` }}
-                >
-                   <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.4)_50%,transparent_100%)] animate-[shimmer_2s_infinite]"></div>
-                </div>
+                ></div>
               </div>
-              <div className="flex justify-between text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] px-2">
-                <div className="flex items-center gap-2.5">
-                   <CheckCircle2 size={14} className="text-green-500" />
-                   <span>{completedTasks} Nodes Resolved</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                   <Clock size={14} className="text-orange-400" />
-                   <span>{totalTasks - completedTasks} Pending Vectors</span>
-                </div>
+              <div className="flex justify-between text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                <span>{completedTasks} Tasks Solved</span>
+                <span>{totalTasks - completedTasks} Remaining</span>
               </div>
             </div>
           </div>
 
-          <div className="relative z-10 flex justify-between items-center mt-12 pt-10 border-t border-gray-50">
-            <div className="flex items-center gap-3">
-               <div className="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></div>
-               <span className="text-gray-400 text-[11px] font-black uppercase tracking-[0.3em]">
-                 Strategic Analytics Localized
-               </span>
-            </div>
-            <div className="w-12 h-12 bg-gray-900 text-white rounded-2xl flex items-center justify-center group-hover:bg-brand-600 transition-all duration-500 group-hover:translate-x-2 group-hover:scale-110 shadow-2xl">
-              <ArrowUpRight size={24} />
-            </div>
+          <div className="relative z-10 flex justify-between items-center mt-4 pt-4 border-t border-gray-50">
+            <button className="text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:text-gray-600 transition-colors">
+              Analytics
+            </button>
+            <Link 
+              href="/roadmap"
+              onClick={(e) => e.stopPropagation()}
+              className="text-brand-600 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:underline underline-offset-4"
+            >
+              Roadmap <ArrowUpRight size={12} />
+            </Link>
           </div>
         </div>
-      </button>
+      </div>
 
       <dialog 
         ref={dialogRef}
-        className="backdrop:bg-gray-950/80 backdrop:backdrop-blur-3xl p-0 rounded-[4.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-2 border-white/10 w-[95%] max-w-6xl h-[90vh] outline-none m-auto overflow-hidden animate-in fade-in zoom-in duration-500"
+        className="backdrop:bg-gray-950/40 backdrop:backdrop-blur-sm p-0 rounded-xl shadow-2xl border border-gray-200 w-[95%] max-w-4xl h-[90vh] max-h-[90vh] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden outline-none"
       >
-        <div className="bg-white flex flex-col h-full font-sans antialiased text-gray-900 selection:bg-brand-100">
-          {/* High-Fidelity Modal Header: Command Level */}
-          <div className="p-16 border-b border-gray-50 flex justify-between items-center bg-gray-50/30 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-16 opacity-[0.03] pointer-events-none group-hover:rotate-12 transition-transform duration-1000">
-               <PieChart size={400} />
-            </div>
-            
-            <div className="flex items-center gap-10 relative z-10">
-              <div className="w-24 h-24 bg-white border-2 border-gray-100 rounded-[2.5rem] flex items-center justify-center shadow-2xl shadow-gray-100 transition-all duration-700 hover:rotate-6 hover:scale-110">
-                <BarChart3 size={40} className="text-brand-600" />
+        <div className="bg-white flex flex-col h-full font-sans antialiased text-gray-900 overscroll-contain">
+          {/* Header - Minimalist Linear Style */}
+          <div className="border-b border-gray-100 p-5 flex justify-between items-center shrink-0 bg-gray-50/50">
+            <div className="flex items-center gap-4">
+              <div className="bg-white border border-gray-200 p-2 rounded-lg shadow-sm">
+                <BarChart3 size={18} className="text-brand-600" />
               </div>
               <div>
-                <h3 className="text-4xl font-black text-gray-900 uppercase tracking-tighter leading-none">Operational Intelligence</h3>
-                <p className="text-[12px] text-gray-400 font-black uppercase tracking-[0.4em] mt-4 flex items-center gap-3">
-                  <Shield size={16} className="text-green-500" /> System Integrity Monitor & Logic Performance Hub
-                </p>
+                <h3 className="text-sm font-semibold text-gray-900 tracking-tight">Performance Analytics</h3>
+                <p className="text-[10px] text-gray-500 font-medium uppercase tracking-widest mt-0.5">Global Progress & Efficiency Metrics</p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-6 relative z-10">
+            <div className="flex items-center gap-2">
               <Link 
                 href="/roadmap"
                 onClick={closeModal}
-                className="text-[11px] font-black uppercase tracking-[0.3em] px-10 py-5 bg-white border-2 border-gray-100 rounded-[2rem] hover:bg-gray-950 hover:text-white hover:border-gray-950 transition-all flex items-center gap-4 shadow-xl shadow-gray-100/50 active:scale-95 group/btn"
+                className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
               >
-                Full Matrix Roadmap <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                Roadmap <ArrowUpRight size={12} />
               </Link>
-              <button onClick={closeModal} className="w-20 h-20 rounded-[2.5rem] hover:bg-white flex items-center justify-center text-gray-300 hover:text-gray-900 transition-all border border-transparent hover:border-gray-100 shadow-sm active:scale-90 hover:rotate-90 duration-500">
-                <X size={40} />
+              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg transition-all">
+                <X size={20} />
               </button>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-16 lg:p-20 scrollbar-hide bg-[radial-gradient(#f3f3f3_1px,transparent_1px)] [background-size:40px_40px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          <div className="flex-1 overflow-y-auto p-8 lg:p-10 scrollbar-thin scrollbar-thumb-gray-200">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
-              {/* Overall Completion - Immersion Focus */}
-              <div className="lg:col-span-5 flex flex-col items-center justify-center py-10 border-r border-gray-50 pr-20">
-                <div className="bg-brand-50 border border-brand-100 rounded-2xl px-8 py-3 mb-20 flex items-center gap-4 shadow-sm">
-                  <div className="w-3 h-3 bg-brand-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(124,58,237,0.5)]"></div>
-                  <h2 className="text-[12px] font-black text-brand-900 uppercase tracking-[0.4em]">Mastery Vector Synchronization</h2>
+              {/* Overall Completion - Centered Focus */}
+              <div className="lg:col-span-4 flex flex-col items-center justify-center py-6 border-r border-gray-100 pr-8">
+                <div className="bg-brand-50 border border-brand-100 rounded-lg px-3 py-1.5 mb-10 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></div>
+                  <h2 className="text-[10px] font-black text-brand-900 uppercase tracking-[0.2em]">Goal Progress</h2>
                 </div>
                 
-                <div className="relative w-80 h-80 mb-20 group/circle">
-                  <div className="absolute inset-0 bg-brand-500/5 rounded-full blur-3xl opacity-0 group-hover/circle:opacity-100 transition-opacity duration-1000"></div>
-                  <svg className="w-full h-full transform -rotate-90 filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative z-10 transition-transform duration-700 group-hover/circle:scale-105">
+                <div className="relative w-48 h-48 mb-8">
+                  <svg className="w-full h-full transform -rotate-90">
                     <circle
-                      cx="160"
-                      cy="160"
-                      r="145"
+                      cx="96"
+                      cy="96"
+                      r="88"
                       stroke="currentColor"
-                      strokeWidth="20"
+                      strokeWidth="12"
                       fill="transparent"
-                      className="text-gray-50"
+                      className="text-gray-100"
                     />
                     <circle
-                      cx="160"
-                      cy="160"
-                      r="145"
+                      cx="96"
+                      cy="96"
+                      r="88"
                       stroke="currentColor"
-                      strokeWidth="20"
+                      strokeWidth="12"
                       fill="transparent"
-                      strokeDasharray={911}
-                      strokeDashoffset={911 - (progress / 100) * 911}
+                      strokeDasharray={552}
+                      strokeDashoffset={552 - (progress / 100) * 552}
                       strokeLinecap="round"
                       className="text-brand-600 transition-all duration-1000 ease-out"
                     />
                   </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center relative z-20">
-                    <span className="text-8xl font-black text-gray-900 tracking-tighter uppercase leading-none">{progress}%</span>
-                    <span className="text-[13px] font-black text-gray-400 uppercase tracking-[0.4em] mt-4 flex items-center gap-2">
-                       <Activity size={14} className="text-brand-500" /> SYNC STATUS
-                    </span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-bold text-gray-900">{progress}%</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Completion</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-8 w-full">
-                  <div className="bg-gray-50/50 border-2 border-gray-50 rounded-[3rem] p-10 text-center transition-all hover:bg-white hover:shadow-2xl hover:shadow-gray-100 hover:-translate-y-2 group/stat relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover/stat:opacity-[0.1] transition-opacity">
-                       <CheckCircle2 size={48} />
-                    </div>
-                    <div className="text-4xl font-black text-gray-900 uppercase tracking-tighter leading-none mb-3">{completedTasks}</div>
-                    <div className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em]">Resolved States</div>
+                <div className="grid grid-cols-2 gap-4 w-full mt-4">
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                    <div className="text-lg font-bold text-gray-900">{completedTasks}</div>
+                    <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Solved</div>
                   </div>
-                  <div className="bg-gray-50/50 border-2 border-gray-50 rounded-[3rem] p-10 text-center transition-all hover:bg-white hover:shadow-2xl hover:shadow-gray-100 hover:-translate-y-2 group/stat relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover/stat:opacity-[0.1] transition-opacity">
-                       <Target size={48} />
-                    </div>
-                    <div className="text-4xl font-black text-gray-900 uppercase tracking-tighter leading-none mb-3">{totalTasks - completedTasks}</div>
-                    <div className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em]">Pending Vectors</div>
+                  <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center">
+                    <div className="text-lg font-bold text-gray-900">{totalTasks - completedTasks}</div>
+                    <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Remaining</div>
                   </div>
                 </div>
               </div>
 
-              {/* Subject Breakdown - Tactical Analysis List */}
-              <div className="lg:col-span-7 space-y-16">
+              {/* Subject Breakdown - Detailed List */}
+              <div className="lg:col-span-8 space-y-8">
                 <div>
-                  <div className="flex items-center justify-between mb-12">
-                     <h2 className="text-[14px] font-black text-gray-900 uppercase tracking-[0.4em] flex items-center gap-4">
-                       <Layers size={22} className="text-brand-500" /> Sector Matrix Allocation
-                     </h2>
-                     <div className="px-5 py-2 bg-gray-50 rounded-xl border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] flex items-center gap-2">
-                        <Globe size={14} className="animate-spin-slow" /> LIVE DATA STREAM
-                     </div>
-                  </div>
-                  <div className="space-y-10">
+                  <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <Layers size={14} /> Subject Breakdown
+                  </h2>
+                  <div className="space-y-6">
                     {subjects.map((subject, idx) => (
-                      <div key={idx} className="space-y-5 group/item">
-                        <div className="flex justify-between items-end px-3">
-                          <div className="flex items-center gap-5">
-                             <div className={cn(
-                               "w-4 h-4 rounded-full transition-all duration-500 group-hover/item:scale-150 group-hover/item:shadow-[0_0_15px_currentColor]",
-                               subject.color === 'brand' && "bg-brand-500 text-brand-500",
-                               subject.color === 'green' && "bg-green-500 text-green-500",
-                               subject.color === 'orange' && "bg-orange-500 text-orange-500",
-                               subject.color === 'blue' && "bg-blue-500 text-blue-500"
-                             )}></div>
-                             <div>
-                               <h4 className="text-lg font-black text-gray-900 uppercase tracking-tight group-hover/item:text-brand-600 transition-colors">{subject.name}</h4>
-                               <p className="text-[11px] text-gray-400 font-black uppercase tracking-[0.2em] mt-1 flex items-center gap-2">
-                                  <ChevronRight size={12} /> {subject.completed} / {subject.total} Objective Logic States Resolved
-                               </p>
-                             </div>
+                      <div key={idx} className="space-y-2">
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <h4 className="text-xs font-bold text-gray-900">{subject.name}</h4>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{subject.completed}/{subject.total} Topics</p>
                           </div>
-                          <div className="text-right">
-                             <span className="text-xl font-black text-gray-900 uppercase tracking-tighter">{Math.round((subject.completed / subject.total) * 100)}%</span>
-                             <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest mt-0.5">SECTOR REVENUE</div>
-                          </div>
+                          <span className="text-xs font-black text-gray-900">{Math.round((subject.completed / subject.total) * 100)}%</span>
                         </div>
-                        <div className="w-full bg-gray-50 border-2 border-gray-50 rounded-full h-4 overflow-hidden p-1 shadow-inner relative">
+                        <div className="w-full bg-gray-50 border border-gray-100 rounded-full h-2 overflow-hidden p-0.5">
                           <div 
                             className={cn(
-                              "h-full rounded-full transition-all duration-1000 relative shadow-2xl",
-                              subject.color === 'brand' && "bg-brand-600 shadow-brand-100",
-                              subject.color === 'green' && "bg-green-500 shadow-green-100",
-                              subject.color === 'orange' && "bg-orange-500 shadow-orange-100",
-                              subject.color === 'blue' && "bg-blue-500 shadow-blue-100"
+                              "h-full rounded-full transition-all duration-1000",
+                              subject.color === 'brand' && "bg-brand-600 shadow-[0_0_8px_rgba(124,58,237,0.4)]",
+                              subject.color === 'green' && "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]",
+                              subject.color === 'orange' && "bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]",
+                              subject.color === 'blue' && "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]",
+                              subject.color === 'yellow' && "bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.4)]"
                             )}
                             style={{ width: `${(subject.completed / subject.total) * 100}%` }}
-                          >
-                             <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_50%,transparent_100%)] animate-[shimmer_3s_infinite]"></div>
-                          </div>
+                          ></div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* AI Tactical Insights - High-Impact HUD */}
-                <div className="pt-16 border-t border-gray-50">
-                  <div className="bg-gray-950 rounded-[4rem] p-12 relative overflow-hidden group/hud shadow-2xl shadow-gray-200">
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] -mr-64 -mt-64 transition-all duration-1000 group-hover/hud:bg-brand-500/20"></div>
-                    <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-                      <div className="relative">
-                         <div className="w-20 h-20 bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[2rem] flex items-center justify-center shadow-2xl group-hover/hud:rotate-12 transition-transform duration-700">
-                            <Zap size={36} className="text-brand-400" />
-                         </div>
-                         <div className="absolute -top-2 -right-2 w-8 h-8 bg-brand-500 rounded-xl flex items-center justify-center border-4 border-gray-950 shadow-2xl">
-                            <Sparkles size={14} className="text-white animate-pulse" />
-                         </div>
+                {/* AI Insights / Predictions */}
+                <div className="pt-8 border-t border-gray-100">
+                  <div className="bg-gray-950 rounded-2xl p-6 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-[80px] -mr-32 -mt-32"></div>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Zap size={14} className="text-brand-400" />
+                        <h4 className="text-[10px] font-black text-brand-400 uppercase tracking-[0.2em]">Predicted Target</h4>
                       </div>
-                      <div className="flex-1 text-center md:text-left">
-                        <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
-                          <h4 className="text-[12px] font-black text-brand-400 uppercase tracking-[0.4em]">Predictive Trajectory Model</h4>
-                          <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg">
-                             <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">v5.0-ALPHA</span>
-                          </div>
-                        </div>
-                        <div className="text-5xl font-black text-white tracking-tighter uppercase leading-tight mb-6">August 12, 2025</div>
-                        <p className="text-gray-400 text-base font-black uppercase tracking-widest leading-relaxed italic">
-                          "Based on current velocity vectors and logic resolution patterns, you are traversing the curriculum 22% faster than the baseline. 
-                          Target completion localized for mid-August. Breakthrough probability high."
-                        </p>
-                        
-                        <div className="flex items-center justify-center md:justify-start gap-10 mt-12 pt-8 border-t border-white/5">
-                           <div className="flex items-center gap-3">
-                              <Brain size={18} className="text-brand-400" />
-                              <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em]">Neural Projection Engine</span>
-                           </div>
-                           <div className="w-2 h-2 bg-gray-800 rounded-full"></div>
-                           <div className="flex items-center gap-3">
-                              <TrendingUp size={18} className="text-green-500" />
-                              <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em]">Efficiency: +24.8%</span>
-                           </div>
-                        </div>
-                      </div>
+                      <div className="text-3xl font-bold text-white tracking-tight mb-2">August 12, 2025</div>
+                      <p className="text-gray-400 text-xs leading-relaxed max-w-md">
+                        Based on your recent activity, you are on track to complete all prerequisite modules 2 months ahead of your graduation goal.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -304,27 +229,25 @@ export default function DetailedProgressModal({
             </div>
           </div>
 
-          {/* Tactical Status Bar: Command Interface */}
-          <div className="border-t border-gray-50 p-12 px-20 bg-gray-50/50 flex justify-between items-center shrink-0">
-            <div className="flex items-center gap-16">
+          {/* Footer Status Bar */}
+          <div className="border-t border-gray-100 p-4 px-8 bg-gray-50/50 flex justify-between items-center shrink-0">
+            <div className="flex items-center gap-6">
               {[
-                { label: "AI Prediction Engine", status: "Active", color: "text-brand-500", icon: Brain },
-                { label: "Logic Matrix Synced", done: true, icon: Shield },
-                { label: "Neural Flow High", done: true, icon: Activity }
+                { label: "AI Prediction", status: "Active", color: "text-brand-500" },
+                { label: "Syllabus Parsed", done: true },
+                { label: "Data Real-time", done: true }
               ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-4 group/status cursor-help">
-                  <div className="w-10 h-10 rounded-2xl bg-white border border-gray-100 flex items-center justify-center shadow-sm group-hover/status:shadow-md transition-all">
-                    {item.done ? <CheckCircle2 size={18} className="text-green-500" /> : <item.icon size={18} className={item.color} />}
-                  </div>
-                  <span className="text-[11px] font-black text-gray-500 uppercase tracking-[0.3em] group-hover/status:text-gray-900 transition-colors">{item.label}</span>
+                <div key={idx} className="flex items-center gap-2">
+                  {item.done ? <CheckCircle2 size={12} className="text-green-500" /> : <div className={cn("w-2 h-2 rounded-full", item.color)}></div>}
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{item.label}</span>
                 </div>
               ))}
             </div>
             <button 
               onClick={closeModal}
-              className="px-16 py-6 bg-gray-950 text-white text-[12px] font-black uppercase tracking-[0.4em] rounded-[2.5rem] hover:bg-brand-600 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.2)] hover:shadow-brand-500/20 active:scale-95 flex items-center gap-4 group/exit"
+              className="px-6 py-2 bg-gray-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-gray-800 transition-all shadow-lg shadow-gray-200"
             >
-              Exit Analytics Matrix <ChevronRight size={20} className="group-hover/exit:translate-x-2 transition-transform" />
+              Dismiss
             </button>
           </div>
         </div>
@@ -332,5 +255,3 @@ export default function DetailedProgressModal({
     </>
   );
 }
-
-

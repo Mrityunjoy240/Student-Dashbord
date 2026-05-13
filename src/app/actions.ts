@@ -17,8 +17,9 @@ export async function uploadSyllabus(formData: FormData) {
   }
 
   try {
-    console.log(`[SYLLABUS] Processing file: ${file.name}`);
+    console.log(`Processing file with Groq: ${file.name}`);
     
+    // 1. Extract Text from PDF using pdf-parse-fork (more stable in Next.js)
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
@@ -26,14 +27,15 @@ export async function uploadSyllabus(formData: FormData) {
     const extractedText = pdfData.text;
 
     if (!extractedText || extractedText.trim().length < 50) {
-      return { success: false, error: "Insufficient text extracted from PDF. Please ensure it is not a scanned image." };
+      return { success: false, error: "Could not extract enough text from the PDF. Is it a scanned image?" };
     }
 
+    // 2. Send Text to Groq
     const groq = new Groq({ apiKey });
 
-    // Split text into individual course blocks
+    // 1. Split text into individual course blocks using "Course Name" as the delimiter
     const blocks = extractedText.split(/Course Name/i).slice(1);
-    console.log(`[SYLLABUS] Identified ${blocks.length} potential course sections.`);
+    console.log(`Found ${blocks.length} potential course blocks.`);
 
     const semanticMap: Record<string, string> = {
       "algorithms": "Design and Analysis of Algorithm",
@@ -43,189 +45,181 @@ export async function uploadSyllabus(formData: FormData) {
       "ai": "AI, Ethics, Society"
     };
 
-    const colors = ["brand", "green", "orange", "blue"];
+    const colors = ["brand", "green", "orange", "yellow", "blue"];
 
     for (let blockIdx = 0; blockIdx < blocks.length; blockIdx++) {
       const blockText = "Course Name " + blocks[blockIdx];
       
       const prompt = `
-        You are an elite academic architect. Analyze this course syllabus block and extract EVERY module and topic.
+        Analyze this single course syllabus block and extract EVERY module and topic.
         
-        STRICT PROTOCOL:
-        1. "Course Name": Extract the EXACT full name.
-        2. "Course Modules": Identify the primary structural units (typically Modules 1-6).
-        3. "Topics": For EVERY module, list EVERY educational topic bullet point.
-        4. IGNORE: Non-educational content like CO-PO tables, evaluation schemes, or reference books.
-        5. OUTPUT: Return ONLY a valid JSON object.
+        STRICT RULES:
+        1. Extract the "Course Name" EXACTLY.
+        2. Find the "Course Modules" section. 
+        3. You must extract ALL modules (typically 1 through 6). DO NOT STOP after the first few.
+        4. For EVERY module, list EVERY topic bullet point.
+        5. IGNORE non-educational tables (CO-PO, Evaluation).
+        6. Return ONLY a JSON object.
         
-        STRUCTURE:
+        Format:
         {
-          "name": "Full Subject Name",
-          "difficulty": "Easy" | "Medium" | "Hard",
+          "name": "Exact Subject Name",
+          "difficulty": "Easy/Medium/Hard",
           "modules": [
-            { "title": "Module X: Title", "topics": ["Topic A", "Topic B"] }
+            { "title": "Module 1 Title", "topics": ["Topic 1", "Topic 2"] },
+            { "title": "Module 2 Title", "topics": ["Topic 3", "Topic 4"] }
+            ... and so on for ALL modules ...
           ]
         }
         
-        SYLLABUS DATA:
+        Block Text:
         ${blockText.substring(0, 15000)}
       `;
 
-      try {
-        const response = await groq.chat.completions.create({
-          messages: [{ role: "user", content: prompt }],
-          model: "llama-3.3-70b-versatile",
-          temperature: 0.1,
-          response_format: { type: "json_object" },
+      const response = await groq.chat.completions.create({
+        messages: [{ role: "user", content: prompt }],
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.1,
+        response_format: { type: "json_object" },
+      });
+
+      const s = JSON.parse(response.choices[0].message.content || "{}");
+      if (!s.name) continue;
+
+      // Apply Semantic Mapping
+      const lowerName = s.name.trim().toLowerCase();
+      let finalName = s.name.trim();
+      if (semanticMap[lowerName]) {
+        finalName = semanticMap[lowerName];
+      }
+
+      await prisma.$transaction(async (tx) => {
+        // Smart Merge
+        let subject = await tx.subject.findFirst({
+          where: { 
+            OR: [
+              { name: { equals: finalName } },
+              { name: { contains: finalName.split(' ')[0] } } // Loose match for first word
+            ]
+          }
         });
 
-        const s = JSON.parse(response.choices[0].message.content || "{}");
-        if (!s.name) {
-          console.warn(`[SYLLABUS] Block ${blockIdx} failed to yield a valid subject name. Skipping.`);
-          continue;
-        }
-
-        const lowerName = s.name.trim().toLowerCase();
-        let finalName = s.name.trim();
-        if (semanticMap[lowerName]) {
-          finalName = semanticMap[lowerName];
-        }
-
-        console.log(`[SYLLABUS] Synchronizing: ${finalName}`);
-
-        await prisma.$transaction(async (tx) => {
-          let subject = await tx.subject.findFirst({
-            where: { 
-              OR: [
-                { name: { equals: finalName } },
-                { name: { startsWith: finalName.split(' ')[0] } }
-              ]
-            }
+        if (!subject) {
+          subject = await tx.subject.create({
+            data: {
+              name: finalName,
+              difficulty: s.difficulty || "Medium",
+              totalTopics: 0,
+              completedTopics: 0,
+              color: colors[blockIdx % colors.length],
+            },
           });
+        }
 
-          if (!subject) {
-            subject = await tx.subject.create({
-              data: {
-                name: finalName,
-                difficulty: s.difficulty || "Medium",
-                totalTopics: 0,
-                completedTopics: 0,
-                color: colors[blockIdx % colors.length],
-              },
-            });
-          }
-
-          if (s.modules) {
-            for (const m of s.modules) {
-              if (m.topics) {
-                for (const topicTitle of m.topics) {
-                  const normalizedTopic = topicTitle.trim();
-                  const existing = await tx.task.findFirst({
-                    where: { title: normalizedTopic, subjectId: subject.id }
+        if (s.modules) {
+          for (const m of s.modules) {
+            if (m.topics) {
+              for (const topicTitle of m.topics) {
+                const normalizedTopic = topicTitle.trim();
+                const existing = await tx.task.findFirst({
+                  where: { title: normalizedTopic, subjectId: subject.id }
+                });
+                if (!existing) {
+                  await tx.task.create({
+                    data: {
+                      title: normalizedTopic,
+                      module: m.title,
+                      isCompleted: false,
+                      category: finalName.substring(0, 10).toUpperCase(),
+                      subjectId: subject.id
+                    }
                   });
-                  
-                  if (!existing) {
-                    await tx.task.create({
-                      data: {
-                        title: normalizedTopic,
-                        module: m.title,
-                        isCompleted: false,
-                        category: finalName.substring(0, 10).toUpperCase(),
-                        subjectId: subject.id,
-                        priority: s.difficulty === "Hard" ? "High" : "Medium"
-                      }
-                    });
-                  }
                 }
               }
             }
           }
+        }
 
-          // Force sync counts
-          const totalCount = await tx.task.count({ where: { subjectId: subject.id } });
-          const completedCount = await tx.task.count({ where: { subjectId: subject.id, isCompleted: true } });
-          
-          await tx.subject.update({
-            where: { id: subject.id },
-            data: { totalTopics: totalCount, completedTopics: completedCount }
-          });
+        // Recalculate
+        const count = await tx.task.count({ where: { subjectId: subject.id } });
+        await tx.subject.update({
+          where: { id: subject.id },
+          data: { totalTopics: count }
         });
-      } catch (innerError) {
-        console.error(`[SYLLABUS] Failed to process block ${blockIdx}:`, innerError);
-      }
+      });
     }
 
     revalidatePath("/");
     return { success: true };
   } catch (error: any) {
-    console.error("[SYLLABUS] Critical Failure:", error);
-    return { success: false, error: error.message || "An unexpected error occurred during synchronization." };
+    console.error("Groq Syllabus Parsing Error:", error);
+    return { 
+      success: false, 
+      error: error.message || "An error occurred while processing the PDF" 
+    };
   }
 }
 
 export async function toggleTask(id: string, isCompleted: boolean) {
-  try {
-    const targetTask = await prisma.task.findUnique({ where: { id } });
-    if (!targetTask) return;
+  const targetTask = await prisma.task.findUnique({ where: { id } });
+  if (!targetTask) return;
 
-    // Batch update related tasks (e.g., if duplicated across views)
-    const tasksToUpdate = await prisma.task.findMany({
-      where: { 
-        OR: [
-          { id: id },
-          { title: targetTask.title, subjectId: targetTask.subjectId }
-        ]
-      }
+  const tasksToUpdate = await prisma.task.findMany({
+    where: { 
+      OR: [
+        { id: id },
+        { title: targetTask.title },
+        { title: targetTask.title.replace("Roadmap: ", "") },
+        { title: `Roadmap: ${targetTask.title}` }
+      ]
+    }
+  });
+
+  const updatedTasks = await Promise.all(tasksToUpdate.map(t => 
+    prisma.task.update({
+      where: { id: t.id },
+      data: { isCompleted },
+      include: { subject: true }
+    })
+  ));
+
+  const subjectIds = Array.from(new Set(updatedTasks.map(t => t.subjectId).filter(Boolean))) as string[];
+  for (const sId of subjectIds) {
+    const completedCount = await prisma.task.count({
+      where: { subjectId: sId, isCompleted: true }
     });
-
-    await prisma.$transaction(tasksToUpdate.map(t => 
-      prisma.task.update({
-        where: { id: t.id },
-        data: { isCompleted }
-      })
-    ));
-
-    // Update subject progress
-    if (targetTask.subjectId) {
-      const completedCount = await prisma.task.count({
-        where: { subjectId: targetTask.subjectId, isCompleted: true }
-      });
-      
-      await prisma.subject.update({
-        where: { id: targetTask.subjectId },
-        data: { completedTopics: completedCount }
-      });
-    }
-
-    // Global goal update
-    const totalTasks = await prisma.task.count();
-    const totalCompleted = await prisma.task.count({ where: { isCompleted: true } });
-    const progress = totalTasks > 0 ? Math.round((totalCompleted / totalTasks) * 100) : 0;
     
-    const goal = await prisma.userGoal.findFirst();
-    if (goal) {
-      await prisma.userGoal.update({
-        where: { id: goal.id },
-        data: { progress }
-      });
-    }
-
-    revalidatePath("/");
-  } catch (error) {
-    console.error("[ACTION] Failed to toggle task state:", error);
+    await prisma.subject.update({
+      where: { id: sId },
+      data: { completedTopics: completedCount }
+    });
   }
-}
 
-export async function updateGoal(targetPackage: string, targetDate: Date, targetRole?: string, branch?: string) {
+  const totalTasks = await prisma.task.count();
+  const totalCompleted = await prisma.task.count({ where: { isCompleted: true } });
+  const progress = totalTasks > 0 ? Math.round((totalCompleted / totalTasks) * 100) : 0;
+  
   const goal = await prisma.userGoal.findFirst();
   if (goal) {
     await prisma.userGoal.update({
       where: { id: goal.id },
-      data: { targetPackage, targetDate, targetRole, branch },
+      data: { progress }
+    });
+  }
+
+  revalidatePath("/");
+}
+
+export async function updateGoal(targetPackage: string, targetDate: Date) {
+  const goal = await prisma.userGoal.findFirst();
+  if (goal) {
+    await prisma.userGoal.update({
+      where: { id: goal.id },
+      data: { targetPackage, targetDate },
     });
   } else {
     await prisma.userGoal.create({
-      data: { targetPackage, targetDate, targetRole, branch, progress: 0 },
+      data: { targetPackage, targetDate, progress: 0 },
     });
   }
   revalidatePath("/");
@@ -283,3 +277,83 @@ export async function deleteEvent(id: string) {
   revalidatePath("/");
 }
 
+export async function addTask(title: string, category: string, priority: string) {
+  await prisma.task.create({
+    data: {
+      title,
+      category,
+      priority,
+      isCompleted: false,
+    }
+  });
+  revalidatePath("/");
+}
+
+export async function seedDatabase() {
+  // Clear existing data
+  await prisma.task.deleteMany();
+  await prisma.subject.deleteMany();
+  await prisma.event.deleteMany();
+  await prisma.exam.deleteMany();
+  await prisma.userGoal.deleteMany();
+
+  // Seed User Goal
+  const userGoal = await prisma.userGoal.create({
+    data: {
+      targetPackage: "15-20 LPA Package",
+      targetRole: "Full Stack Developer",
+      progress: 42,
+      targetDate: new Date("2026-12-31T23:59:59Z"),
+    },
+  });
+
+  // Seed Exam
+  await prisma.exam.create({
+    data: {
+      name: "Final Semester Exams",
+      targetDate: new Date("2026-11-15T09:00:00Z"),
+    },
+  });
+
+  // Seed Subjects
+  const ds = await prisma.subject.create({
+    data: {
+      name: "Data Structures",
+      difficulty: "Medium",
+      totalTopics: 30,
+      completedTopics: 18,
+      color: "brand",
+    },
+  });
+
+  const dbms = await prisma.subject.create({
+    data: {
+      name: "Database Management",
+      difficulty: "Medium",
+      totalTopics: 20,
+      completedTopics: 9,
+      color: "green",
+    },
+  });
+
+  // Seed Events
+  await prisma.event.createMany({
+    data: [
+      { title: "DBMS Assignment", type: "Assignment", date: new Date("2026-05-20"), color: "green" },
+      { title: "OS Quiz", type: "Assignment", date: new Date("2026-05-25"), color: "orange" },
+      { title: "End Sem Exam", type: "Exam", date: new Date("2026-06-10"), color: "red" },
+    ],
+  });
+
+  // Seed Tasks
+  await prisma.task.createMany({
+    data: [
+      { title: "DBMS - Normalization (Topic 3)", isCompleted: true, category: "DBMS", subjectId: dbms.id },
+      { title: "DSA - Arrays Practice", isCompleted: true, category: "DSA", subjectId: ds.id },
+      { title: "Solve Previous Year Paper", isCompleted: false, category: "EXAM" },
+    ],
+  });
+
+  revalidatePath("/");
+  return { success: true };
+}
