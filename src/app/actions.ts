@@ -320,8 +320,8 @@ export async function seedDatabase() {
     data: {
       name: "Data Structures",
       difficulty: "Medium",
-      totalTopics: 30,
-      completedTopics: 18,
+      totalTopics: 7,
+      completedTopics: 4,
       color: "brand",
     },
   });
@@ -330,9 +330,29 @@ export async function seedDatabase() {
     data: {
       name: "Database Management",
       difficulty: "Medium",
-      totalTopics: 20,
-      completedTopics: 9,
+      totalTopics: 6,
+      completedTopics: 3,
       color: "green",
+    },
+  });
+
+  const os = await prisma.subject.create({
+    data: {
+      name: "Operating Systems",
+      difficulty: "Hard",
+      totalTopics: 4,
+      completedTopics: 2,
+      color: "orange",
+    },
+  });
+
+  const ml = await prisma.subject.create({
+    data: {
+      name: "Machine Learning",
+      difficulty: "Hard",
+      totalTopics: 3,
+      completedTopics: 1,
+      color: "blue",
     },
   });
 
@@ -341,16 +361,45 @@ export async function seedDatabase() {
     data: [
       { title: "DBMS Assignment", type: "Assignment", date: new Date("2026-05-20"), color: "green" },
       { title: "OS Quiz", type: "Assignment", date: new Date("2026-05-25"), color: "orange" },
+      { title: "DSA Contest", type: "Study Plan", date: new Date("2026-05-28"), color: "brand" },
       { title: "End Sem Exam", type: "Exam", date: new Date("2026-06-10"), color: "red" },
     ],
   });
 
-  // Seed Tasks
+  // Seed Tasks (Topics)
   await prisma.task.createMany({
     data: [
-      { title: "DBMS - Normalization (Topic 3)", isCompleted: true, category: "DBMS", subjectId: dbms.id },
-      { title: "DSA - Arrays Practice", isCompleted: true, category: "DSA", subjectId: ds.id },
+      // Data Structures
+      { title: "Arrays & Linked Lists", isCompleted: true, category: "DSA", subjectId: ds.id, module: "Module 1: Foundations" },
+      { title: "Stacks & Queues", isCompleted: true, category: "DSA", subjectId: ds.id, module: "Module 1: Foundations" },
+      { title: "Binary Trees Implementation", isCompleted: true, category: "DSA", subjectId: ds.id, module: "Module 2: Trees" },
+      { title: "AVL Trees & Rotations", isCompleted: true, category: "DSA", subjectId: ds.id, module: "Module 2: Trees" },
+      { title: "Graph BFS/DFS", isCompleted: false, category: "DSA", subjectId: ds.id, module: "Module 3: Graphs" },
+      { title: "Dijkstra's Algorithm", isCompleted: false, category: "DSA", subjectId: ds.id, module: "Module 3: Graphs" },
+      { title: "Dynamic Programming Basics", isCompleted: false, category: "DSA", subjectId: ds.id, module: "Module 4: Advanced" },
+      
+      // DBMS
+      { title: "ER Diagrams", isCompleted: true, category: "DBMS", subjectId: dbms.id, module: "Module 1: Design" },
+      { title: "Relational Algebra", isCompleted: true, category: "DBMS", subjectId: dbms.id, module: "Module 1: Design" },
+      { title: "Normalization (1NF, 2NF, 3NF)", isCompleted: true, category: "DBMS", subjectId: dbms.id, module: "Module 2: Normalization" },
+      { title: "BCNF & 4NF", isCompleted: false, category: "DBMS", subjectId: dbms.id, module: "Module 2: Normalization" },
+      { title: "SQL Joins & Subqueries", isCompleted: false, category: "DBMS", subjectId: dbms.id, module: "Module 3: SQL" },
+      { title: "Transaction ACID Properties", isCompleted: false, category: "DBMS", subjectId: dbms.id, module: "Module 4: Transactions" },
+
+      // OS
+      { title: "Process States & PCB", isCompleted: true, category: "OS", subjectId: os.id, module: "Module 1: Processes" },
+      { title: "CPU Scheduling Algorithms", isCompleted: true, category: "OS", subjectId: os.id, module: "Module 1: Processes" },
+      { title: "Deadlock Detection", isCompleted: false, category: "OS", subjectId: os.id, module: "Module 2: Concurrency" },
+      { title: "Paging & Segmentation", isCompleted: false, category: "OS", subjectId: os.id, module: "Module 3: Memory" },
+
+      // ML
+      { title: "Linear Regression", isCompleted: true, category: "ML", subjectId: ml.id, module: "Module 1: Supervised" },
+      { title: "Logistic Regression", isCompleted: false, category: "ML", subjectId: ml.id, module: "Module 1: Supervised" },
+      { title: "K-Means Clustering", isCompleted: false, category: "ML", subjectId: ml.id, module: "Module 2: Unsupervised" },
+      
+      // General Tasks
       { title: "Solve Previous Year Paper", isCompleted: false, category: "EXAM" },
+      { title: "Complete Roadmap Project", isCompleted: false, category: "ROADMAP" },
     ],
   });
 
